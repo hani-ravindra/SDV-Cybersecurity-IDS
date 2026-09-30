@@ -1,0 +1,431 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #080b10;
+    color: #e8edf3;
+}
+
+.topbar {
+    padding: 28px 5%;
+    border-bottom: 1px solid #202630;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.eyebrow,
+.label {
+    font-size: 11px;
+    letter-spacing: 1.4px;
+    color: #7e8998;
+    font-weight: 700;
+}
+
+h1 {
+    margin: 5px 0;
+    font-size: 30px;
+}
+
+h2 {
+    margin: 5px 0 0;
+    font-size: 21px;
+}
+
+p {
+    color: #8d98a7;
+    margin: 5px 0;
+}
+
+code {
+    color: #d9e1ea;
+}
+
+.server-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+}
+
+#status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #777;
+}
+
+main {
+    width: 90%;
+    max-width: 1400px;
+    margin: 30px auto;
+}
+
+.overview-grid,
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 16px;
+}
+
+.card,
+.stat-card {
+    background: #0f141b;
+    border: 1px solid #202833;
+    border-radius: 12px;
+}
+
+.card {
+    padding: 20px;
+}
+
+.card strong,
+.stat-card strong {
+    display: block;
+    margin-top: 9px;
+    font-size: 24px;
+}
+
+.card small {
+    display: block;
+    margin-top: 7px;
+    color: #697585;
+}
+
+.scenario-section {
+    margin-top: 35px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.scenario-button {
+    text-align: left;
+    min-height: 105px;
+    border: 1px solid #2a333f;
+    border-radius: 10px;
+    padding: 18px;
+    background: #111720;
+    color: #e8edf3;
+    cursor: pointer;
+}
+
+.scenario-button:hover {
+    transform: translateY(-2px);
+    border-color: #697585;
+}
+
+.scenario-name {
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.scenario-description {
+    display: block;
+    margin-top: 8px;
+    color: #7e8998;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.scenario-button.dos {
+    border-left: 4px solid #ff6573;
+}
+
+.scenario-button.fuzzy {
+    border-left: 4px solid #c28cff;
+}
+
+.scenario-button.gear {
+    border-left: 4px solid #ffb454;
+}
+
+.scenario-button.rpm {
+    border-left: 4px solid #5bb7ff;
+}
+
+.scenario-note {
+    margin-top: 12px;
+    padding: 13px 15px;
+    border: 1px solid #202833;
+    border-radius: 8px;
+    color: #7e8998;
+    font-size: 12px;
+    background: #0c1117;
+}
+
+.traffic-section {
+    margin-top: 35px;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+}
+
+button {
+    border: 0;
+    border-radius: 7px;
+    padding: 10px 16px;
+    background: #e8edf3;
+    color: #080b10;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button.secondary {
+    background: #171d25;
+    color: #d7dde5;
+    border: 1px solid #2b3440;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.current-message {
+    padding: 0;
+    overflow: hidden;
+}
+
+.message-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid #202833;
+    display: flex;
+    justify-content: space-between;
+    color: #8994a3;
+    font-size: 13px;
+}
+
+.message-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1.2fr 1fr 1fr;
+    gap: 0;
+}
+
+.message-grid > div {
+    padding: 25px 18px;
+    border-right: 1px solid #202833;
+}
+
+.message-grid > div:last-child {
+    border-right: none;
+}
+
+.payload-box strong {
+    font-family: Consolas, monospace;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.prediction {
+    transition: 0.2s;
+}
+
+.prediction.normal strong {
+    color: #69d18a;
+}
+
+.prediction.attack {
+    background: #35161b;
+}
+
+.prediction.attack strong {
+    color: #ff6573;
+}
+
+.stat-card {
+    padding: 20px;
+}
+
+.normal-card strong {
+    color: #69d18a;
+}
+
+.attack-card strong {
+    color: #ff6573;
+}
+
+.alert-panel {
+    margin-top: 18px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    border-color: #2a333f;
+}
+
+.alert-panel.alert {
+    border-color: #a83e4b;
+    background: #211116;
+}
+
+.alert-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #242b34;
+    font-weight: 800;
+}
+
+.alert-panel.alert .alert-icon {
+    background: #7f2632;
+}
+
+.alert-panel strong {
+    font-size: 14px;
+}
+
+.model-info {
+    margin-top: 18px;
+}
+
+.model-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 15px;
+    background: #202833;
+}
+
+.model-grid > div {
+    padding: 18px;
+    background: #0f141b;
+}
+
+.model-grid strong {
+    display: block;
+    margin-top: 8px;
+    font-size: 16px;
+}
+
+.table-section {
+    margin-top: 18px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 13px 10px;
+    border-top: 1px solid #202833;
+    font-size: 13px;
+}
+
+th {
+    color: #758091;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+td {
+    color: #cbd3dd;
+}
+
+.mono {
+    font-family: Consolas, monospace;
+}
+
+.result-normal {
+    color: #69d18a;
+    font-weight: 700;
+}
+
+.result-attack {
+    color: #ff6573;
+    font-weight: 700;
+}
+
+.empty {
+    text-align: center;
+    color: #687383;
+    padding: 25px;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: #5e6875;
+    font-size: 11px;
+    padding: 25px 0 10px;
+}
+
+@media (max-width: 1100px) {
+    .scenario-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .message-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    .overview-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .message-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .model-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+    .topbar,
+    .section-heading,
+    footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .overview-grid,
+    .stats-grid,
+    .scenario-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .message-grid,
+    .model-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .controls {
+        flex-wrap: wrap;
+    }
+}

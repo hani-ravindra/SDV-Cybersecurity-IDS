@@ -1,0 +1,21 @@
+{
+    "model": "Random Forest",
+    "features": [
+        "CAN_ID_numeric",
+        "Data_0",
+        "Data_1",
+        "Data_2",
+        "Data_3",
+        "Data_4",
+        "Data_5",
+        "Data_6",
+        "Data_7"
+    ],
+    "target": "Label",
+    "classes": {
+        "0": "Normal",
+        "1": "Attack"
+    },
+    "test_size": 0.2,
+    "random_state": 42
+}

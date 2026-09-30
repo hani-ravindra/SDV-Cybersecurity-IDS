@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SDV Cybersecurity IDS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div>
+        <div class="eyebrow">SOFTWARE-DEFINED VEHICLE</div>
+
+        <h1>CAN Cybersecurity Monitor</h1>
+
+        <p>
+            Machine-learning intrusion detection dashboard
+        </p>
+    </div>
+
+    <div class="server-status">
+
+        <span id="status-dot"></span>
+
+        <span id="server-status">
+            Checking...
+        </span>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- Overview -->
+
+    <section class="overview-grid">
+
+        <div class="card">
+            <span class="label">SYSTEM STATUS</span>
+            <strong id="system-status">ONLINE</strong>
+            <small>Flask IDS service</small>
+        </div>
+
+        <div class="card">
+            <span class="label">MODEL</span>
+            <strong>RANDOM FOREST</strong>
+            <small>Binary CAN intrusion classifier</small>
+        </div>
+
+        <div class="card">
+            <span class="label">FEATURES</span>
+            <strong id="feature-count">9</strong>
+            <small>CAN ID + 8 payload bytes</small>
+        </div>
+
+        <div class="card">
+            <span class="label">MESSAGES PROCESSED</span>
+            <strong id="total-count">0</strong>
+            <small>Current dashboard session</small>
+        </div>
+
+    </section>
+
+
+    <!-- Attack Scenario Testing -->
+
+    <section class="scenario-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">
+                    SECURITY TESTING
+                </span>
+
+                <h2>
+                    Attack Scenario Testing
+                </h2>
+
+                <p>
+                    Replay labeled HCRL attack messages through the binary IDS.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="scenario-grid">
+
+            <button class="scenario-button dos"
+                    onclick="testScenario('DoS')">
+
+                <span class="scenario-name">
+                    DoS
+                </span>
+
+                <span class="scenario-description">
+                    Denial-of-Service traffic
+                </span>
+
+            </button>
+
+
+            <button class="scenario-button fuzzy"
+                    onclick="testScenario('Fuzzy')">
+
+                <span class="scenario-name">
+                    Fuzzy
+                </span>
+
+                <span class="scenario-description">
+                    Randomized CAN messages
+                </span>
+
+            </button>
+
+
+            <button class="scenario-button gear"
+                    onclick="testScenario('Gear Spoofing')">
+
+                <span class="scenario-name">
+                    Gear Spoofing
+                </span>
+
+                <span class="scenario-description">
+                    Gear-related message spoofing
+                </span>
+
+            </button>
+
+
+            <button class="scenario-button rpm"
+                    onclick="testScenario('RPM Spoofing')">
+
+                <span class="scenario-name">
+                    RPM Spoofing
+                </span>
+
+                <span class="scenario-description">
+                    Engine RPM message spoofing
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <div class="scenario-note">
+
+            <strong>Testing mode:</strong>
+
+            The selected scenario is taken from the dataset's
+            <code>Attack_Type</code> label. The Random Forest itself
+            predicts only <strong>NORMAL</strong> or
+            <strong>ATTACK</strong>.
+
+        </div>
+
+    </section>
+
+
+    <!-- Live Traffic -->
+
+    <section class="traffic-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">
+                    LIVE TRAFFIC
+                </span>
+
+                <h2>
+                    CAN Message Monitor
+                </h2>
+            </div>
+
+
+            <div class="controls">
+
+                <button id="start-btn"
+                        onclick="startSimulation()">
+                    Start Simulation
+                </button>
+
+                <button class="secondary"
+                        onclick="stopSimulation()">
+                    Stop
+                </button>
+
+                <button class="secondary"
+                        onclick="resetDashboard()">
+                    Reset
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="current-message card">
+
+            <div class="message-header">
+
+                <span>
+                    Latest CAN Message
+                </span>
+
+                <span id="timestamp">
+                    --:--:--
+                </span>
+
+            </div>
+
+
+            <div class="message-grid">
+
+                <div>
+                    <span class="label">
+                        SCENARIO
+                    </span>
+
+                    <strong id="scenario">
+                        ---
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span class="label">
+                        CAN ID
+                    </span>
+
+                    <strong id="can-id">
+                        ---
+                    </strong>
+                </div>
+
+
+                <div class="payload-box">
+
+                    <span class="label">
+                        PAYLOAD
+                    </span>
+
+                    <strong id="payload">
+                        -- -- -- -- -- -- -- -- 
+                    </strong>
+
+                </div>
+
+
+                <div id="prediction-box"
+                     class="prediction normal">
+
+                    <span class="label">
+                        IDS PREDICTION
+                    </span>
+
+                    <strong id="prediction">
+                        WAITING
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span class="label">
+                        CONFIDENCE
+                    </span>
+
+                    <strong id="confidence">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span class="label">
+                        LATENCY
+                    </span>
+
+                    <strong id="latency">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Counters -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card normal-card">
+
+            <span class="label">
+                NORMAL MESSAGES
+            </span>
+
+            <strong id="normal-count">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card attack-card">
+
+            <span class="label">
+                ATTACKS DETECTED
+            </span>
+
+            <strong id="attack-count">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="label">
+                ATTACK RATE
+            </span>
+
+            <strong id="attack-rate">
+                0.0%
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- Alert -->
+
+    <section class="alert-panel card"
+             id="alert-panel">
+
+        <div class="alert-icon">
+            !
+        </div>
+
+        <div>
+
+            <strong id="alert-title">
+                SYSTEM READY
+            </strong>
+
+            <p id="alert-text">
+                Select an attack scenario or start simulated CAN traffic.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Model information -->
+
+    <section class="card model-info">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="eyebrow">
+                    MACHINE LEARNING
+                </span>
+
+                <h2>
+                    IDS Model Information
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="model-grid">
+
+            <div>
+                <span class="label">ALGORITHM</span>
+                <strong>Random Forest</strong>
+            </div>
+
+            <div>
+                <span class="label">CLASSIFICATION</span>
+                <strong>Binary</strong>
+            </div>
+
+            <div>
+                <span class="label">NORMAL CLASS</span>
+                <strong>0</strong>
+            </div>
+
+            <div>
+                <span class="label">ATTACK CLASS</span>
+                <strong>1</strong>
+            </div>
+
+            <div>
+                <span class="label">INPUT FEATURES</span>
+                <strong>9</strong>
+            </div>
+
+            <div>
+                <span class="label">MODEL FILE</span>
+                <strong>ids_model.pkl</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Event Log -->
+
+    <section class="table-section card">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="eyebrow">
+                    EVENT LOG
+                </span>
+
+                <h2>
+                    Recent Detection Events
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>TIME</th>
+                        <th>SCENARIO</th>
+                        <th>CAN ID</th>
+                        <th>PAYLOAD</th>
+                        <th>RESULT</th>
+                        <th>CONFIDENCE</th>
+                        <th>LATENCY</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="event-table">
+
+                    <tr>
+
+                        <td colspan="7"
+                            class="empty">
+
+                            No CAN messages detected yet.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <span>
+            HCRL Car-Hacking Dataset
+        </span>
+
+        <span>
+            Simulated/replayed CAN traffic —
+            no physical vehicle connection
+        </span>
+
+    </footer>
+
+</main>
+
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>

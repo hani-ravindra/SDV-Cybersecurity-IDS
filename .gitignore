@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs / generated runtime files
+*.log
+predictions_log.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large raw HCRL datasets
+dataset/DoS_dataset.csv
+dataset/Fuzzy_dataset.csv
+dataset/gear_dataset.csv
+dataset/RPM_dataset.csv
+
+# Generated archives
+*.zip
