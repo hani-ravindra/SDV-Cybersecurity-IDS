@@ -161,6 +161,10 @@ def dashboard():
         scenarios=list(SCENARIOS.keys()),
     )
 
+@app.route("/vehicle")
+def vehicle_dashboard():
+    return render_template("vehicle.html")
+
 
 @app.route("/api/status")
 def api_status():

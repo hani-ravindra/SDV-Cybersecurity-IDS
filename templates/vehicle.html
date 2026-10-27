@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Shield | Security Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='vehicle.css') }}">
+    <script src="{{ url_for('static', filename='vehicle.js') }}" defer></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-icon">⬡</span>
+            <div>
+                <h2>Vehicle Shield</h2>
+                <p>Security Monitor</p>
+            </div>
+        </div>
+
+        <nav>
+            <a class="nav-item active" href="/vehicle">⌂ &nbsp; Vehicle Home</a>
+            <a class="nav-item" href="#monitoring">⌁ &nbsp; Monitoring</a>
+            <a class="nav-item" href="#events">♧ &nbsp; Security Events</a>
+            <a class="nav-item" href="#systems">▦ &nbsp; Network Activity</a>
+            <a class="nav-item" href="/">⚙ &nbsp; Technical Dashboard</a>
+        </nav>
+
+        <div class="demo-note">
+            <span class="status-dot"></span>
+            <strong>Demo mode</strong>
+            <p>Using recorded CAN messages. No physical vehicle is connected.</p>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">VEHICLE SECURITY</p>
+                <h1>My Vehicle</h1>
+                <p class="muted">Understand your vehicle's network security at a glance.</p>
+            </div>
+            <div class="demo-pill"><span class="status-dot"></span> Recorded-data demo</div>
+        </header>
+
+        <section class="hero-grid">
+            <article class="card vehicle-card">
+                <div class="car-art" aria-hidden="true">
+                    <svg class="vehicle-illustration"
+                         viewBox="0 0 320 220"
+                         xmlns="http://www.w3.org/2000/svg"
+                         role="img">
+
+                        <defs>
+                            <linearGradient id="carBody" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#55e6ff"/>
+                                <stop offset="55%" stop-color="#168de0"/>
+                                <stop offset="100%" stop-color="#0753a6"/>
+                            </linearGradient>
+
+                            <linearGradient id="windshield" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#a7f3ff"/>
+                                <stop offset="100%" stop-color="#2686ca"/>
+                            </linearGradient>
+
+                            <linearGradient id="hood" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#2de2d0"/>
+                                <stop offset="100%" stop-color="#087eae"/>
+                            </linearGradient>
+
+                            <radialGradient id="carGlow">
+                                <stop offset="0%" stop-color="#18d9d0" stop-opacity=".28"/>
+                                <stop offset="100%" stop-color="#18d9d0" stop-opacity="0"/>
+                            </radialGradient>
+
+                            <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="7"/>
+                            </filter>
+                        </defs>
+
+                        <!-- Soft background glow -->
+                        <ellipse cx="160" cy="118" rx="125" ry="100"
+                                 fill="url(#carGlow)"/>
+
+                        <!-- Ground shadow -->
+                        <ellipse cx="160" cy="194" rx="76" ry="10"
+                                 fill="#020817" opacity=".65"/>
+
+                        <!-- Wheels -->
+                        <rect x="88" y="139" width="30" height="49" rx="10"
+                              fill="#111827" stroke="#31445c" stroke-width="3"/>
+                        <rect x="202" y="139" width="30" height="49" rx="10"
+                              fill="#111827" stroke="#31445c" stroke-width="3"/>
+
+                        <rect x="94" y="153" width="18" height="22" rx="6"
+                              fill="#34465c"/>
+                        <rect x="208" y="153" width="18" height="22" rx="6"
+                              fill="#34465c"/>
+
+                        <!-- Body silhouette -->
+                        <path d="M86 112
+                                 L99 83
+                                 Q105 69 124 65
+                                 L196 65
+                                 Q215 69 221 83
+                                 L234 112
+                                 Q246 120 246 138
+                                 L246 158
+                                 Q246 171 231 174
+                                 L89 174
+                                 Q74 171 74 158
+                                 L74 138
+                                 Q74 120 86 112Z"
+                              fill="#0878bd" opacity=".65"
+                              transform="translate(0 5)"/>
+
+                        <path d="M86 112
+                                 L101 83
+                                 Q107 69 125 65
+                                 L195 65
+                                 Q213 69 219 83
+                                 L234 112
+                                 Q245 120 245 137
+                                 L245 157
+                                 Q245 170 230 173
+                                 L90 173
+                                 Q75 170 75 157
+                                 L75 137
+                                 Q75 120 86 112Z"
+                              fill="url(#carBody)"
+                              stroke="#69e8ff" stroke-width="2"/>
+
+                        <!-- Roof and windshield -->
+                        <path d="M104 104 L119 78
+                                 Q123 72 134 72
+                                 L186 72
+                                 Q197 72 201 78
+                                 L216 104Z"
+                              fill="#075b9b" stroke="#8deeff" stroke-width="2"/>
+
+                        <path d="M121 82
+                                 Q125 77 135 77
+                                 L185 77
+                                 Q195 77 199 82
+                                 L208 101
+                                 L112 101Z"
+                              fill="url(#windshield)"/>
+
+                        <!-- Windshield reflections -->
+                        <path d="M130 81 L151 81 L140 99 L121 99Z"
+                              fill="#e0fbff" opacity=".42"/>
+                        <path d="M173 80 L184 80 L194 98 L183 98Z"
+                              fill="#e0fbff" opacity=".25"/>
+
+                        <!-- Front hood -->
+                        <path d="M91 113
+                                 Q160 102 229 113
+                                 L239 143
+                                 Q160 155 81 143Z"
+                              fill="url(#hood)"
+                              stroke="#53e9e0" stroke-width="1.5"/>
+
+                        <!-- Hood details -->
+                        <path d="M115 117 Q160 111 205 117"
+                              fill="none" stroke="#b3fff6" stroke-opacity=".55"
+                              stroke-width="2"/>
+
+                        <!-- Headlights -->
+                        <path d="M83 123 Q96 119 108 125 L106 139
+                                 Q95 143 82 137Z"
+                              fill="#fff1a8" stroke="#fffbd2" stroke-width="2"/>
+                        <path d="M237 123 Q224 119 212 125 L214 139
+                                 Q225 143 238 137Z"
+                              fill="#fff1a8" stroke="#fffbd2" stroke-width="2"/>
+
+                        <ellipse cx="96" cy="131" rx="17" ry="12"
+                                 fill="#f7e7a0" opacity=".16" filter="url(#softGlow)"/>
+                        <ellipse cx="224" cy="131" rx="17" ry="12"
+                                 fill="#f7e7a0" opacity=".16" filter="url(#softGlow)"/>
+
+                        <!-- Front grille -->
+                        <rect x="132" y="130" width="56" height="19" rx="7"
+                              fill="#08223d" stroke="#48cfe2" stroke-width="2"/>
+                        <path d="M141 136 H179 M141 142 H179"
+                              stroke="#36738f" stroke-width="2" stroke-linecap="round"/>
+
+                        <!-- Lower bumper -->
+                        <path d="M87 151 Q160 163 233 151 L226 164
+                                 Q160 175 94 164Z"
+                              fill="#0b3968" stroke="#3bbfd6" stroke-width="1.5"/>
+
+                        <path d="M119 160 H201"
+                              stroke="#6cf5e9" stroke-width="3"
+                              stroke-linecap="round" opacity=".8"/>
+
+                        <!-- Small security shield -->
+                        <path d="M160 177 L171 182 L170 192
+                                 Q168 198 160 202
+                                 Q152 198 150 192 L149 182Z"
+                              fill="#0b263d" stroke="#32e6ca" stroke-width="2"/>
+
+                        <path d="M155 189 L159 193 L166 185"
+                              fill="none" stroke="#32e6ca" stroke-width="2.5"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <p class="eyebrow">NETWORK SECURITY STATUS</p>
+                <h2 id="security-status" class="security-status warning">Monitoring Not Active</h2>
+                <p id="security-description" class="muted">
+                    Start monitoring to analyse recorded vehicle messages.
+                </p>
+                <div class="status-strip">
+                    <span class="status-dot"></span>
+                    <span id="monitor-state">Monitoring stopped</span>
+                </div>
+            </article>
+
+            <article class="card monitor-card" id="monitoring">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">LIVE-STYLE ACTIVITY</p>
+                        <h2>Network Monitoring</h2>
+                    </div>
+                    <span class="badge" id="mode-badge">Ready</span>
+                </div>
+
+                <div class="metrics">
+                    <div class="metric">
+                        <span class="metric-icon">↔</span>
+                        <strong id="total-count">0</strong>
+                        <span>Messages checked</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-icon warning-icon">!</span>
+                        <strong id="attack-count">0</strong>
+                        <span>Suspicious messages</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-icon">◷</span>
+                        <strong id="latency">—</strong>
+                        <span>Processing time (ms)</span>
+                    </div>
+                </div>
+
+                <div class="notice">
+                    <strong>What is being checked?</strong>
+                    <p>
+                        The AI model analyses each recorded message and flags
+                        patterns it classifies as normal or suspicious.
+                    </p>
+                </div>
+
+                <div class="controls">
+                    <button id="start-btn" class="btn btn-primary">▶ Start monitoring</button>
+                    <button id="stop-btn" class="btn btn-secondary" disabled>■ Stop</button>
+                    <button id="reset-btn" class="btn btn-secondary">↻ Reset</button>
+                </div>
+                <p id="action-message" class="muted small" role="status">
+                    Start when you're ready.
+                </p>
+            </article>
+        </section>
+
+        <section class="card" id="systems">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">MESSAGE CLASSIFICATION</p>
+                    <h2>Vehicle Network Overview</h2>
+                </div>
+                <span class="muted small">Based on analysed messages</span>
+            </div>
+
+            <div class="system-grid">
+                <div class="system-card">
+                    <span class="system-icon">01</span>
+                    <div><h3>Engine messages</h3><p>Network message activity</p></div>
+                    <span class="badge neutral" id="engine-status">Awaiting data</span>
+                </div>
+                <div class="system-card">
+                    <span class="system-icon">02</span>
+                    <div><h3>Braking messages</h3><p>Network message activity</p></div>
+                    <span class="badge neutral" id="braking-status">Awaiting data</span>
+                </div>
+                <div class="system-card">
+                    <span class="system-icon">03</span>
+                    <div><h3>Transmission messages</h3><p>Network message activity</p></div>
+                    <span class="badge neutral" id="transmission-status">Awaiting data</span>
+                </div>
+                <div class="system-card">
+                    <span class="system-icon">04</span>
+                    <div><h3>Vehicle network</h3><p>Overall message classification</p></div>
+                    <span class="badge neutral" id="network-status">Monitoring inactive</span>
+                </div>
+            </div>
+            <p class="muted small">
+                These are illustrative categories, not verified physical component
+                diagnostics. The current model classifies messages, not individual
+                engine, brake, or transmission health.
+            </p>
+        </section>
+
+        <section class="card" id="events">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">RECENT ACTIVITY</p>
+                    <h2>Security Event History</h2>
+                </div>
+                <button id="clear-events-btn" class="text-btn">Clear view</button>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Message</th>
+                            <th>Result</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="event-list">
+                        <tr id="empty-row">
+                            <td colspan="4" class="empty-state">
+                                No messages processed yet. Start monitoring to begin.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer>
+            Vehicle Shield · Educational prototype · Recorded HCRL dataset
+        </footer>
+    </main>
+</body>
+</html>
